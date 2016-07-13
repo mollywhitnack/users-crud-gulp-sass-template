@@ -11,7 +11,8 @@ const pump = require('pump')
 const sass = require('gulp-sass')
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
-var browserSync = require('browser-sync');
+const browserSync = require('browser-sync');
+const eslint = require('gulp-eslint'); 
 
 var BROWSER_SYNC_RELOAD_DELAY = 500;
 
@@ -34,6 +35,16 @@ let paths = {
     output: 'public'
   } 
 }
+
+gulp.task('watch:lint', ['lint'], function(){
+  return gulp.watch(['**/*.js', '!node_modules/**', '!public/**'])
+})
+
+gulp.task('lint', function(){
+  return gulp.src(['**/*.js', '!node_modules/**', '!public/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+});
 
 gulp.task('default', ['build', 'watch', 'browser-sync']);
 
