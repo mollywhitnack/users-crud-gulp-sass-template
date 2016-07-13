@@ -1,9 +1,5 @@
 'use strict';
 
-// gulp -> .task, .src, .dest 
-// .pipe
-// gulp.watch --> watch files for changes to trgiger other tasks
-
 const gulp = require('gulp');
 const babel = require('gulp-babel')
 const concat = require('gulp-concat');
@@ -15,6 +11,9 @@ const pump = require('pump')
 const sass = require('gulp-sass')
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
+var browserSync = require('browser-sync');
+
+var BROWSER_SYNC_RELOAD_DELAY = 500;
 
 // can be ./ but not / at begining
 let paths = {
@@ -36,10 +35,7 @@ let paths = {
   } 
 }
 
-//do inital html and watch 
-//any file that ends in html in the html directory
-//** for any nested directories in the html dir
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', ['build', 'watch', 'browser-sync']);
 
 //tess heroku to run build but not watch
 gulp.task('build', ['html', 'css', 'js', 'favicon']);
@@ -53,6 +49,25 @@ gulp.task('watch',['watch:html', 'watch:css', 'watch:js']);
   });
 })*/
 
+gulp.task('nodemon', function (cb) {
+  var called = false;
+  return nodemon({
+    script: 'app.js',
+    watch: ['app.js']
+  })
+    .on('start', function onStart() {
+      if (!called) { cb(); }
+      called = true;
+    })
+    .on('restart', function onRestart() {
+      setTimeout(function reload() {
+        browserSync.reload({
+          stream: false
+        });
+      }, BROWSER_SYNC_RELOAD_DELAY);
+    });
+});
+
 ///////////////////// HTML //////////////////////
 gulp.task('html', ['clean:html'], function(){
   return gulp.src(paths.html.input)
@@ -64,7 +79,7 @@ gulp.task('clean:html', function(){
 });
 
 gulp.task('watch:html', function(){
-  gulp.watch(paths.html.input, ['html']);
+  gulp.watch(paths.html.input, ['html', 'bs-reload']);
 })
 
 /////////////////// JS /////////////////////////
@@ -87,7 +102,7 @@ gulp.task('clean:js', function(){
 });
 
 gulp.task('watch:js', function(){
-  gulp.watch(paths.js.input, ['js']);
+  gulp.watch(paths.js.input, ['js', browserSync.reload]);
 })
 
 ///////////////////// CSS //////////////////////
@@ -95,6 +110,7 @@ gulp.task('css', ['clean:css'], function(){
   return gulp.src(paths.css.input)
   .pipe(plumber())
   .pipe(sass())
+  .pipe(browserSync.reload({ stream: true }))
   .pipe(gulp.dest(paths.css.output))
 });
 
@@ -112,7 +128,18 @@ gulp.task('favicon', function(){
   .pipe(gulp.dest(paths.favicon.output));
 })
 
+gulp.task('browser-sync', ['nodemon'], function () {
 
+  browserSync({
+    proxy: 'http://localhost:8000',
+    port: 4000,
+    browser: ['google-chrome']
+  });
+});
+
+gulp.task('bs-reload', function() {
+  browserSync.reload();
+});
 
 
 
