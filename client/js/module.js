@@ -49,7 +49,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('cruds', {
         url: '/cruds', 
         templateUrl: 'html/cruds.html',
-        controller: 'crudsCtrl'
+        controller: 'crudCtrl'
       })
   $urlRouterProvider.otherwise('/');
 });

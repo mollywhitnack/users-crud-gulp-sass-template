@@ -12,7 +12,7 @@ app.service('Crud', function($http, $q){
     return $http.get(`/api/cruds/${id}`);
   }
 
-  this.addCrud= (apartment) =>{
+  this.addCrud= (crud) =>{
     return $http.post(`/api/cruds`, crud)
       .then(res => {
         return $q.resolve(res.data);

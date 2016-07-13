@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crud List</title>
+</head>
+<body ng-app='myApp' ng-controller='crudListCtrl'>
+<div class = "container">
+  <h1>Crud List</h1>
+
+    <table class = 'table' ng-hide = "cruds.length ===0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Created At</th>
+        <th>Something</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat = 'crud in cruds track by $index'>
+      <td >{{crud._id}}</td>
+      <td >{{crud.createdAt}}</td>
+      <td >{{crud.something}}</td>
+      <td>
+        <button class="btn btn-danger" ng-click = 'deleteCrud($index, crud)'>Delete</button><br><br>
+        <button class="btn btn-warning" ng-click = 'showUpdateForm($index, crud)'>Update</button>
+      </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <form ng-submit = 'addCrud()' ng-hide = "showUpdate">
+    <div class="form-group">
+        <label >Something</label>
+        <input type="text" class="form-control" placeholder="something" ng-model = 'newItem.something' required>
+      </div>
+      <div class = "text-center submitbt"><button type="submit" class="btn btn-primary">Add New Crud</button></div>
+    </form>
+
+  <form ng-submit = 'updateCrud()' ng-show = "showUpdate">
+    <div class="form-group">
+        <label >Something</label>
+        <input type="text" class="form-control" ng-model = 'updateItem.something' required>
+    </div>
+    <div class = "text-center submitbt"><button type="submit" class="btn btn-success">Update Something</button></div>
+  </form>
+
+
+</div>
+</body>
+</html>

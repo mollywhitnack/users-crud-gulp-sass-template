@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 
 let crudSchema = new mongoose.Schema({
      createdAt: { type: Date, default: Date.now },
-     residents: [{type: mongoose.Schema.Types.ObjectId, ref: 'Resident'}]
+     something: {type: String}
+     //residents: [{type: mongoose.Schema.Types.ObjectId, ref: 'Resident'}]
 });
 
 let Crud;
 
 //cant use arrow functions
-crudSchema.statics.addResident = function(apartmentId, residentId, cb){
+/*crudSchema.statics.addResident = function(apartmentId, residentId, cb){
     //'this' is apartment model
     this.findById(apartmentId, (err, apartment)=>{
       if(err || !apartment) return cb(err || 'apartment not found');
@@ -29,10 +30,10 @@ crudSchema.methods.addResidentMethod = function(residentId, cb){
 }
 
 crudSchema.methods.getSomething = function(crudId, cb){
-    /*let tenants = this.residents.length;
+    let tenants = this.residents.length;
     var totalRent = tenants * this.rent;
-    return totalRent;*/
-}
+    return totalRent;
+}*/
 
 Crud =  mongoose.model('Crud', crudSchema);
 
