@@ -46,7 +46,7 @@ app.use((req, res, next) => {
 app.use('/api', require('./routes/api'));
 
 app.get('/', (req, res) => {
-  res.render('index', {title: 'Users/Crud/Gulp/Sass Template'});
+  res.render('index', {title: 'Template'});
 });
 
 // catch 404 and forward to error handler
