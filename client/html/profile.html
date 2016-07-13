@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> {{user.displayName}}</title>
+</head>
+<body ng-app='myApp' ng-controller='profileCtrl'>
+<h1 class = "text-center">{{user.displayName}}</h1>
+
+<div class = "text-center">
+
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-xs" ng-hide = "displayNameForm" ng-click = "showdisplayNameForm()">Edit Username</button>
+  <form ng-submit = updatedisplayName() ng-show = "displayNameForm">
+    <input type = "text" placeholder = "USername" ng-model = 'newItem.displayName'>
+    <button class = "btn btn-info " >Submit</button>
+    <button class = "btn btn-danger" type = "cancel" ng-click = "canceldisplayName()">Cancel</button>
+  </form>
+  <hr>
+
+  <div class = "pictureCont"> <img ng-src="{{user.profileImage}}" style="max-width:300px"></div>
+  <button ng-if ="currentUser._id === user._id" class = "btn btn-xs" ng-hide = "photoForm" ng-click = "showPictureForm()">Edit Profile Picture</button>
+  <form ng-submit = updatePicture() ng-show = "photoForm">
+    <input type = "text" placeholder = "Picture Url" ng-model = 'newItem.profileImage'>
+    <button class = "btn btn-info" >Submit</button>
+    <button class = "btn btn-danger" type = "cancel" ng-click = "cancelPhotoUrl()">Cancel</button>
+  </form>
+
+  <hr>
+
+  <pre>{{user | json }}</pre>
+ 
+
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
